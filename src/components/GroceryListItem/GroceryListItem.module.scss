@@ -1,0 +1,401 @@
+@import '../../variables';
+
+.GroceryListItem {
+
+    box-sizing: border-box;
+    display: flex;
+    cursor: pointer;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    font-weight: 300;
+    margin: 0 24px 4px;
+    overflow: hidden;
+    padding: 18px 0 ;
+    position: relative;
+    transition: all .4s ease-in-out;
+
+    align-items: center;
+
+    &__Content {
+
+        box-sizing: border-box;
+        color: $foreground-color;
+        flex: 1 1 calc(50% - 48px);
+        padding: 0 0 0 24px;
+
+        a {
+            text-decoration: none;
+        }
+
+        &__Name {
+    
+            color: $primary-color;
+            display: flex;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 12pt;
+            font-weight: 600;
+            line-height: 14pt;
+            margin: 0;
+            padding: 0;
+            position: relative;
+
+            align-items: center;
+
+            &::before {
+
+                background-color: darken($primary-color, 24%);
+                content: '';
+                position: absolute;
+                transform: translateY(-50%)
+                            scaleX(0);
+                transform-origin: left;
+                transition: transform .4s ease-in-out;
+
+                height: 1px;
+
+                top: 50%;
+                left: -4px;
+                right: 0;
+
+            }
+
+            &__Store {
+
+                margin: 4px 0 0;
+
+                &__Empty {
+
+                    color: darken($foreground-color, 10%);
+
+                }
+
+            }
+    
+        }
+
+    }
+
+    &__Button {
+
+        background-color: $background-color;
+        color: darken($primary-color, 24%);
+        border: 1px solid $primary-color;
+        border-radius: 50%;
+        box-sizing: border-box;
+        cursor: pointer;
+        display: flex;
+        flex: 0 0 14px;
+        outline: none;
+        padding: 0;
+        transition: background .4s ease-in-out,
+                    border .3s ease-in-out;
+
+        align-items: center;
+        justify-content: center;
+
+        width: 24px;
+        height: 24px;
+
+        svg {
+
+            color: $background-color;
+            opacity: 0;
+            transition: opacity .3s ease-in-out;
+
+        }
+        
+        &:active {
+
+            background: #e4e4e4;
+
+        }
+
+        &.checked {
+
+            background: $primary-color;
+
+            svg {
+
+                opacity: 1;
+                
+            }
+
+        }
+
+    }
+
+    &__DeleteButton {
+
+        background-color: $background-color;
+        color: darken($primary-color, 24%);
+        border: 0;
+        border-radius: 50%;
+        box-sizing: border-box;
+        cursor: pointer;
+        display: flex;
+        flex: 0 0 24px;
+        margin: 0 0 0 24px;
+        outline: none;
+        padding: 0;
+        transition: background .4s ease-in-out,
+                    border .3s ease-in-out;
+
+        align-items: center;
+        justify-content: center;
+
+        width: 24px;
+        height: 24px;
+
+        svg {
+
+            opacity: 0;
+            transition: opacity .3s ease-in-out;
+
+        }
+
+        &.checked {
+
+            svg {
+
+                opacity: 1;
+                
+            }
+
+            &:active {
+
+                background: #e4e4e4;
+    
+            }
+
+        }
+
+    }
+
+    &.checked {
+        
+        .GroceryListItem__button {
+            
+            box-shadow: none;
+            
+        }
+
+        .GroceryListItem {
+        
+            &__Content__Name {
+                
+                color: darken($primary-color, 24%);
+
+                &::before {
+
+                    transform: translateY(-50%)
+                                scaleX(1);
+
+                }
+
+            }
+        }
+
+    }
+
+    &__ConfigDialog {
+
+        background: lighten($background-color, 10%);
+        color: darken($primary-color, 24%);
+        border-radius: 16px 16px 0 0;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        padding: 24px 24px 74px;
+        position: fixed;
+        transform: translateY(100%);
+        transition: transform .4s ease-in-out;
+
+        z-index: 3;
+
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        &.open {
+
+            transform: translateY(0);
+
+        }
+
+        h2 {
+    
+            color: $foreground-color;
+            margin: 0 0 24px 0;
+    
+        }
+
+        p {
+
+            color: $foreground-color;
+            font-size: 12pt;
+            font-weight: 600;
+            margin: 0 0 24px;
+
+        }
+
+        &__Actions {
+
+            display: flex;
+
+            button {
+    
+                background-color: $primary-color;
+                border: 0;
+                border-radius: 16px;
+                box-sizing: border-box;
+                color: $background-color;
+                cursor: pointer;
+                font-size: 12pt;
+                outline: none;
+                padding: 16px;
+
+                width: calc(50% - 12px);
+    
+            }
+
+            &__Cancel {
+
+                margin: 0 24px 0 0;
+
+            }
+
+        }
+
+        &__ChooseStore {
+
+            background: $primary-color;
+            border: 0;
+            border-radius: 16px;
+            box-sizing: border-box;
+            color: $background-color;
+            display: flex;
+            font-size: 12pt;
+            margin: 48px 0 0;
+            outline: none;
+            padding: 16px;
+            transition: background .4s ease-in-out;
+
+            align-items: center;
+            justify-content: center;
+
+            &__Icon {
+
+                flex: 0 0 24px;
+                position: absolute;
+
+                left: 40px;
+
+            }
+
+            &__StoreList {
+
+                display: flex;
+                flex-direction: column;
+                list-style: none;
+                margin: 24px 0;
+                padding: 0;
+
+                &__Item {
+
+                    button {
+
+                        background: none;
+                        border: 0;
+                        border-bottom: 1px solid $primary-color;
+                        box-sizing: border-box;
+                        color: $foreground-color;
+                        display: flex;
+                        font-size: 12pt;
+                        outline: none;
+                        padding: 18px;
+                        
+                        align-items: center;
+                        justify-content: flex-start;
+
+                        width: 100%;
+
+                        span {
+
+                            background: #fff;
+                            border-radius: 50%;
+                            display: block;
+                            margin: 0 12px 0 0;
+
+                            width: 16px;
+                            height: 16px;
+
+                        }
+                        
+                    }
+
+                }
+
+            }
+
+        }
+
+        &__CloseButton {
+
+            background: rgba(0, 0, 0, 0);
+            border: 0;
+            border-radius: 50%;
+            color: $foreground-color;
+            outline: none;
+            position: absolute;
+            transition: background .4s ease-in-out;
+    
+            top: 12px;
+            right: 12px;
+    
+            width: 44px;
+            height: 44px;
+    
+            &:active {
+    
+                background: lighten($background-color, 40%);
+    
+            }
+    
+        }
+
+    }
+
+}
+
+@media screen and (min-width: 768px) {
+
+    .GroceryListItem {
+
+        &__DeleteDialog {
+            
+            margin: 0 auto;
+            padding: 24px;
+            transform: translateY(100%);
+    
+            max-width: 400px;
+    
+            &__open {
+    
+                transform: translateY(0);
+        
+            }
+
+        }
+
+        &__ConfigDialog {
+    
+            margin: 0 auto;
+            padding: 24px;
+    
+            max-width: 400px;
+    
+        }
+
+    }
+
+}

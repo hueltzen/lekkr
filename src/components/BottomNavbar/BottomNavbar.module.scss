@@ -1,0 +1,91 @@
+@import '../../variables';
+
+.BottomNavbar {
+
+    background: $background-color;
+    border-top: 1px solid lighten($background-color, 16%);
+    box-sizing: border-box;
+    color: $foreground-color;
+    display: flex;
+    padding: 12px 24px 36px;
+    position: fixed;
+
+    height: 110px;
+
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    .container {
+
+        display: flex;
+        flex: 0 0 100%;
+        margin: 0 auto;
+
+        max-width: 600px;
+
+    }
+
+    a {
+
+        display: flex;
+        color: $foreground-color;
+        padding: 16px 20px;
+        transition: color .4s ease-in-out;
+
+        align-items: center;
+        justify-content: center;
+
+        &:focus,
+        &:active {
+            color: $primary-color;
+        }
+
+        .desktopOnly {
+
+            display: none;
+            
+        }
+
+    }
+
+    &__Left {
+
+        display: flex;
+        flex: 0 0 50%;
+
+        justify-content: flex-start;
+
+    }
+
+    &__Right {
+
+        display: flex;
+        flex: 0 0 50%;
+        
+        justify-content: flex-end;
+
+    }
+
+}
+
+@media screen and (min-width: 768px) {
+
+    .BottomNavbar {
+
+        a {
+
+            text-decoration: none;
+
+            .desktopOnly {
+        
+                display: block;
+                margin: 0 0 0 12px;
+        
+            }
+
+        }
+
+    }
+
+}

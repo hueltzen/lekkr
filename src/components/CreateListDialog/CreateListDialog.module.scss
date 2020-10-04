@@ -1,0 +1,128 @@
+@import '../../variables';
+
+.CreateListDialog {
+
+    background-color: lighten($background-color, 10%);
+    border-radius: 16px 16px 0 0;
+    box-sizing: border-box;
+    color: $foreground-color;
+    padding: 24px 24px 24px;
+    position: fixed;
+    transform: translateY(300px);
+    transition: transform .4s ease-in-out;
+
+    height: 300px;
+
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    z-index: 3;
+
+    h2 {
+
+        margin: 0 0 48px 0;
+
+    }
+
+    form {
+
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    input {
+
+        background-color: #fff;
+        background-repeat: no-repeat;
+        background-position: calc(100% - 16px) center;
+        border: 2px solid #fff;
+        border-radius: 16px;
+        box-sizing: border-box;
+        font-size: 16px;
+        margin: 0 0 24px;
+        outline: none;
+        padding: 10px 12px;
+        transition: border .4s ease-in-out;
+
+        &:focus {
+
+            border: 2px solid $primary-color;
+
+        }
+
+    }
+
+    &__CreateButton {
+
+        background: $primary-color;
+        border: 0;
+        border-radius: 16px;
+        box-sizing: border-box;
+        color: $background-color;
+        font-size: 12pt;
+        outline: none;
+        padding: 16px;
+        transition: background .4s ease-in-out;
+
+        &:disabled {
+
+            background: lighten($background-color, 10%);
+            color: lighten($background-color, 40%);
+
+        }
+
+    }
+
+    &__open {
+
+        transform: translateY(0);
+
+    }
+
+    &__CloseButton {
+
+        background: rgba(0, 0, 0, 0);
+        border: 0;
+        border-radius: 50%;
+        color: $foreground-color;
+        outline: none;
+        position: absolute;
+        transition: background .4s ease-in-out;
+
+        top: 12px;
+        right: 12px;
+
+        width: 44px;
+        height: 44px;
+
+        &:active {
+
+            background: lighten($background-color, 40%);
+
+        }
+
+    }
+
+}
+
+@media screen and (min-width: 768px) {
+
+    .CreateListDialog {
+
+        margin: 0 auto;
+        transform: translateY(260px);
+
+        height: 260px;
+        max-width: 400px;
+
+        &__open {
+
+            transform: translateY(0);
+    
+        }
+
+    }
+
+}

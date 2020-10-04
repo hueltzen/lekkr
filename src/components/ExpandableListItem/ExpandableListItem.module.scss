@@ -1,0 +1,27 @@
+@import '../../variables';
+
+.ExpandableListItem {
+
+    color: $foreground-color;
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 48px;
+
+    h2 {
+
+        color: $primary-color;
+
+    }
+
+    p {
+
+        a {
+
+            color: $primary-color;
+            text-decoration: none;
+
+        }
+
+    }
+
+}

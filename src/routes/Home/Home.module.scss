@@ -1,0 +1,62 @@
+@import '../../variables';
+
+.Home {
+
+    margin: 0 auto;
+    max-width: 600px;
+
+    &__EmptyMessage {
+
+        color: darken($foreground-color, 60%);
+        font-size: 12pt;
+        font-weight: 300;
+        padding: 24px 0;
+        text-align: center;
+
+    }
+    
+    &__Button {
+        
+        background-color: $primary-color;
+        border: 0;
+        border-radius: 50%;
+        color: $background-color;
+        box-sizing: border-box;
+        cursor: pointer;
+        display: flex;
+        font-size: 14pt;
+        font-weight: 300;
+        margin: 0;
+        outline: none;
+        padding: 12px 12px;
+        position: fixed;
+        transform: translateX(-50%);
+    
+        align-items: center;
+        justify-content: center;
+    
+        width: 64px;
+        height: 64px;
+    
+        bottom: 74px;
+        left: 50%;
+
+        z-index: 2;
+        
+    }
+
+}
+
+@media screen and (min-width: 768px) {
+
+    .Home {
+
+        &__Button {
+            
+            right: 74px;
+
+        }
+
+    }
+
+}

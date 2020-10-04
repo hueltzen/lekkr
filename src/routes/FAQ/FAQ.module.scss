@@ -1,0 +1,23 @@
+.FAQ {
+
+    display: flex;
+    flex-direction: column;
+
+    margin: 0 auto;
+    max-width: 600px;
+
+    h1 {
+
+        color: #fff;
+        text-align: left;
+        margin: 0 96px 0 24px;
+
+    }
+
+    &__List {
+
+        margin: 48px 24px;
+
+    }
+
+}

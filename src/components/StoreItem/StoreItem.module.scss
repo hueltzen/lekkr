@@ -1,0 +1,65 @@
+@import '../../variables';
+
+.StoreItem {
+
+    color: $foreground-color;
+    display: flex;
+    flex-direction: row;
+    margin: 0 24px 24px;
+    padding: 12px 0;
+
+    align-items: center;
+    justify-content: flex-start;
+
+    &__Name {
+
+        flex: 0 0 calc(100% - 96px);
+
+    }
+
+    &__ColorTags {
+
+        border-radius: 50%;
+        display: flex;
+        flex: 0 0 24px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 0;
+        margin: 0 24px 0 0;
+
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    &__DeleteButton {
+
+        background-color: $background-color;
+        color: $foreground-color;
+        border: 0;
+        border-radius: 50%;
+        box-sizing: border-box;
+        cursor: pointer;
+        display: flex;
+        flex: 0 0 24px;
+        margin: 0 0 0 24px;
+        outline: none;
+        padding: 0;
+        transition: background .4s ease-in-out,
+                    border .3s ease-in-out;
+
+        align-items: center;
+        justify-content: center;
+
+        width: 24px;
+        height: 24px;
+
+        svg {
+
+            transition: opacity .3s ease-in-out;
+
+        }
+
+    }
+    
+}
