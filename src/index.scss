@@ -20,6 +20,7 @@ html, body {
     width: $size;
     height: $size;
 
+    &__none {background: #222 !important;}
     &__white {background: $store-white !important;}
     &__red {background: $store-red !important;}
     &__green {background: $store-green !important;}

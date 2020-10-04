@@ -19,9 +19,12 @@
     &__Content {
 
         box-sizing: border-box;
+        display: flex;
         color: $foreground-color;
         flex: 1 1 calc(50% - 48px);
         padding: 0 0 0 24px;
+
+        align-items: center;
 
         a {
             text-decoration: none;
@@ -34,9 +37,9 @@
             font-family: 'Open Sans', sans-serif;
             font-size: 12pt;
             font-weight: 600;
-            line-height: 14pt;
+            line-height: 12pt;
             margin: 0;
-            padding: 0;
+            padding: 0 4px;
             position: relative;
 
             align-items: center;
@@ -54,20 +57,18 @@
                 height: 1px;
 
                 top: 50%;
-                left: -4px;
+                left: 0;
                 right: 0;
 
             }
 
             &__Store {
 
-                margin: 4px 0 0;
-
-                &__Empty {
-
-                    color: darken($foreground-color, 10%);
-
-                }
+                border-radius: 50%;
+                margin: 0 12px 0 0;
+                
+                width: 12px;
+                height: 12px;
 
             }
     

@@ -53,6 +53,12 @@ class GroceryListItem extends Component {
             </li>
         );
 
+        const storeTags = {};
+        this.state.stores.forEach(store => {
+            storeTags[store.uuid] = store.primaryColor
+        });
+        console.log(storeTags);
+
         return(
             <div className={styles.GroceryListItem + ' ' + (this.state.checked ? styles.checked : '')}>
                 <button onClick={this.toggleCheck} className={styles.GroceryListItem__Button + ' ' + (this.state.checked ? styles.checked : '')}>
@@ -60,13 +66,13 @@ class GroceryListItem extends Component {
                 </button>
             
                 <div className={styles.GroceryListItem__Content} onClick={this.openConfigDialog} >
+                    { this.state.store && this.state.store.uuid && 
+                        <div className={ styles.GroceryListItem__Content__Name__Store + ' tag__' + storeTags[this.state.store.uuid]}></div>
+                    }
+                    { !this.state.store.uuid && 
+                        <div className={ styles.GroceryListItem__Content__Name__Store + ' tag__none'}></div>
+                    }
                     <h2 className={styles.GroceryListItem__Content__Name}>{ this.props.name }</h2>
-                    { this.state.store && 
-                        <div className={ styles.GroceryListItem__Content__Name__Store}>{ this.state.store.name }</div>
-                    }
-                    { !this.state.store.name && 
-                        <div className={ styles.GroceryListItem__Content__Name__Store__Empty }>Click to add Store</div>
-                    }
                 </div>
                 
                 <button 
