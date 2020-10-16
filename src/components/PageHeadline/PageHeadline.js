@@ -1,15 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styles from './PageHeadline.module.scss';
 
-class PageHeadline extends Component {
+function PageHeadline(props) {
 
-    render() {
-        return(
-            <h1 className={styles.PageHeadline}>
-                { this.props.children }
-            </h1>
-        )
-    }
+    return(
+        <h1 className={styles.PageHeadline}>
+            { props.children }
+        </h1>
+    );
         
 }
 

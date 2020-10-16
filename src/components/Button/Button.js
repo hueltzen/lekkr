@@ -1,15 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styles from './Button.module.scss';
 
-class Button extends Component {
+function Button(props) {
 
-    render() {
-        return(
-            <button className={styles.Button}>
-                { this.props.children }
-            </button>
-        )
-    }
+    return (
+        <button className={styles.Button}>
+            { this.props.children }
+        </button>
+    );
         
 }
 

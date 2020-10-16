@@ -1,199 +1,136 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import styles from './SingleList.module.scss';
 
-import { v4 as uuidv4 } from 'uuid';
+import { connect } from 'react-redux';
+import { 
+    addGrocery,
+    setGrocery
+} from '../../actions/ListActions';
+
+import { motion, AnimatePresence } from  'framer-motion';
+import PageTransition from '../PageTransitions';
 
 import PageHeadline from '../../components/PageHeadline/PageHeadline';
 import GroceryListItem from '../../components/GroceryListItem/GroceryListItem';
 
 import { ReactComponent as AddIcon } from './add.svg';
 
-class SingleList extends Component {
+const mapStateToProps = state => {
+    return { lists: state.lists };
+};
 
-    constructor(props) {
-        super(props);
+function mapDispatchToProps(dispatch) {
+    return {
+        addGrocery: item => dispatch(addGrocery(item)),
+        setGrocery: item => dispatch(setGrocery(item))
+    };
+}
+function SingleList(props) {
 
-        this.refresh = this.refresh.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.addItem = this.addItem.bind(this);
-        this.setItemChecked = this.setItemChecked.bind(this);
-        this.deleteItem = this.deleteItem.bind(this);
+    const transition = {
+        visible: {
+            opacity: [0, 0, 0, 1],
+            y: [48, 32, 16, 0]
+        },
+        hidden: {
+            opacity: [0, 0, 0, 0],
+            y: [0, 16, 32, 48]
+        },
+        transition: {
+            duration: 1.2
+        }
+    }
 
-        this.setFocusOnAdd = this.setFocusOnAdd.bind(this);
+    const { match: { params } } = props;
+    const [ uuid, setUuid ] = useState(params.uuid);
+    const [ groceryName, setGroceryName ] = useState('');
 
-        this.state = ({
-            uuid: '',
-            name: '',
-            items: [],
+    function handleChange(e) {
 
-            groceryName: ''
-        })
+        setGroceryName(e.target.value);
 
     }
 
-    componentDidMount() {
+    function addItem(e) {
 
-        this.refresh();
-
-    }
-
-    render() {
-        const shoppingListItems = this.state.items.map((item, i) => 
-            <GroceryListItem 
-                key={i}
-                listUuid={this.state.uuid}
-                uuid={item.uuid}
-                name={item.name}
-                checked={item.checked}
-                setItemChecked={this.setItemChecked}
-                deleteItem={this.deleteItem}
-                store={item.store}/>
-        );
-
-        return(
-            <div className={styles.SingleList}>
-                <PageHeadline>
-                    { this.state.name }
-                </PageHeadline>
-
-                <div className={styles.SingleList__GroceryList}>
-                    <form onSubmit={this.addItem}>
-                        <input 
-                            type="text"
-                            value={this.state.groceryName}
-                            onChange={this.handleChange}
-                            ref={(input) => { this.addInput = input; }} 
-                            name="groceryName"
-                            placeholder="Add Item"
-                            max-length="40" />
-
-                        <button 
-                            type="submit">
-                            <AddIcon />
-                        </button>
-                    </form>
-                    
-                    <div>
-                        { shoppingListItems.length > 0
-                            ? shoppingListItems
-                            : <p className={styles.SingleList__GroceryList__EmptyMessage}>No Items yet.</p>}
-                    </div>
-                </div>
-
-                <button className={styles.SingleList__Button} onClick={this.setFocusOnAdd}>
-                    <AddIcon />
-                </button>
-            </div>
-        )
-    }
-
-    refresh() {
-
-        const { match: { params } } = this.props;
-        const shoppingList = JSON.parse(localStorage.getItem(params.uuid))
-
-        this.setState({
-            uuid: params.uuid,
-            name: shoppingList.name,
-            items: shoppingList.items,
-            
-            groceryName: ''
-        });
-
-    }
-
-    handleChange(event) {
-
-        this.setState({
-            [event.target.name]: event.target.value
-        });
-
-    }
-
-    setFocusOnAdd() {
-
-        this.addInput.focus();
-
-    }
-
-    addItem(e) {
-
-        console.log('addItem');
         e.preventDefault();
 
-        console.log(this.state.groceryName.length);
+        if (groceryName !== '' && groceryName.length < 41) {
 
-        if (this.state.groceryName !== '' &&
-            this.state.groceryName.length < 41) {
-
-            const loadedShoppingList = JSON.parse(localStorage.getItem(this.state.uuid));
-            const groceryName = this.state.groceryName;
-
-            this.setState({
-                ...this.state,
-                groceryName: ''
+            props.addGrocery({
+                uuid: uuid,
+                name: groceryName
             });
-    
-            loadedShoppingList.items.push({
-                uuid: uuidv4(),
-                name: groceryName,
-                checked: false
-            });
-    
-            localStorage.setItem(
-                this.state.uuid,
-                JSON.stringify(loadedShoppingList)
-            );
-    
-            this.refresh();
+
+            setGroceryName('');
 
         }
 
-
     }
 
-    setItemChecked(uuid, checked) {
+    const shoppingList = props.lists.filter(list => {
+        return list.uuid === uuid
+    })[0];
 
-        const loadedShoppingList = JSON.parse(localStorage.getItem(this.state.uuid));
+    const shoppingListItems = shoppingList.items.map((item, i) => 
+        <GroceryListItem 
+            key={i}
+            listUuid={uuid}
+            uuid={item.uuid}
+            name={item.name}
+            checked={item.checked}/>
+    );
 
-        loadedShoppingList.items = loadedShoppingList.items.map(listItem => {
-
-            if (listItem.uuid === uuid) {
-                listItem.checked = checked;
-            }
+    return(
+        <motion.div
+            className={styles.SingleList}
+            variants={PageTransition}
+            initial="out"
+            animate="in"
+            exit="out"
+            transition="transition">
             
-            return listItem;
+            <PageHeadline>
+                { shoppingList.name }
+            </PageHeadline>
 
-        });
+            <div className={styles.SingleList__GroceryList}>
+                <form onSubmit={addItem}>
+                    <input 
+                        type="text"
+                        value={groceryName}
+                        onChange={handleChange}
+                        name="groceryName"
+                        placeholder="Add Item"
+                        max-length="40" />
 
-        localStorage.setItem(
-            this.state.uuid,
-            JSON.stringify(loadedShoppingList)
-        );
-
-        this.refresh();
-
-    }
-
-    deleteItem(uuid) {
-
-        const loadedShoppingList = JSON.parse(localStorage.getItem(this.state.uuid));
-
-        loadedShoppingList.items = loadedShoppingList.items.filter(listItem => {
-            
-            return listItem.uuid !== uuid;
-
-        });
-
-        localStorage.setItem(
-            this.state.uuid,
-            JSON.stringify(loadedShoppingList)
-        );
-
-        this.refresh();
-
-    }
+                    <button 
+                        type="submit">
+                        <AddIcon />
+                    </button>
+                </form>
+                
+                { shoppingListItems.length > 0 && 
+                    <AnimatePresence>
+                        <motion.div
+                            variants={transition}
+                            key="shoppingListItems"
+                            initial="hidden"
+                            animate="visible"
+                            exit="hidden"
+                            transition={transition}>
+                                {shoppingListItems}
+                        </motion.div>
+                    </AnimatePresence>}
+                { shoppingListItems.length === 0 && 
+                    <p className={styles.SingleList__EmptyMessage}>So quiet here... <span role="img" aria-label="quietness">🤭</span></p>}
+            </div>
+        </motion.div>
+    );
 
 }
 
-export default SingleList;
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SingleList);

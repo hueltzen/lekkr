@@ -1,115 +1,133 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import styles from './CreateListDialog.module.scss';
 
-import { v4 as uuidv4 } from 'uuid';
+import { connect } from 'react-redux';
+import { createList, setCreateDialog } from '../../actions/ListActions';
+import { motion } from 'framer-motion';
 
 import { ReactComponent as CloseIcon } from './close.svg';
 
-class CreateListDialog extends Component {
+const mapStateToProps = state => {
+    return { isOpen: state.isCreateDialogOpen }
+}
 
-    constructor(props) {
-        super(props);
+function mapDispatchToProps(dispatch) {
+    return {
+        createList: list => dispatch(createList(list)),
+        setCreateDialog: open => dispatch(setCreateDialog(open))
+    };
+}
 
-        this.open = this.open.bind(this);
-        this.close = this.close.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.createList = this.createList.bind(this);
+function CreateListDialog(props) {
 
-        this.state = ({
-            show: false,
-            listName: ''
-        });
+    const fadeTransition = {
+        visible: {
+            opacity: 1
+        },
+        hidden: {
+            opacity: 0
+        },
+        transition: {
+            duration: 0.4,
+        }
     }
 
-    render() {
-        return(
-            <div className={styles.CreateListDialog + ' ' + (this.state.show ? styles.CreateListDialog__open : '')}>
-                <button onClick={this.close} className={styles.CreateListDialog__CloseButton}>
-                    <CloseIcon />
-                </button>
-
-                <h2>
-                    New Shopping List
-                </h2>
-            
-                <form onSubmit={this.createList}>
-                    <input 
-                        type="text"
-                        value={this.state.listName}
-                        onChange={this.handleChange}
-                        name="listName"
-                        placeholder="List name" />
-
-                    <button 
-                        type="submit"
-                        className={styles.CreateListDialog__CreateButton}
-                        disabled={this.state.listName === ''}>
-                        Create
-                    </button>
-                </form>
-            </div>
-        )
-    }
-    
-    open() {
-        this.setState({
-            ...this.state,
-            show: true
-        });
+    const transition = {
+        visible: {
+            scale: 1,
+            y: 0
+        },
+        hidden: {
+            scale: 0,
+            y: 0
+        },
+        transition: {
+            duration: 0.4,
+        }
     }
 
-    close() {
-        this.setState({
-            ...this.state,
-            show: false
-        });
-    }
+    const [ listName, setListName ] = useState('');
 
-    handleChange(e) {
-
-        this.setState({
-            [e.target.name]: e.target.value
+    function close() {
+        
+        props.setCreateDialog({
+            open: false
         });
 
     }
 
-    createList(e) {
+    function handleChange(e) {
+
+        setListName(e.target.value);
+
+    }
+
+    function createList(e) {
         e.preventDefault();
 
-        if (this.state.listName === '') {
+        if (listName === '') {
             return;
         }
 
-        const result = Object.keys(localStorage).filter(key => {
-
-            const shoppingList = JSON.parse(localStorage.getItem(key));
-    
-            return shoppingList.name === this.state.listName;
-    
+        props.createList({
+            name: listName
         });
 
-        console.log(result);
-        if (result.length !== 0) {
-            this.close();
-            return;
-        }
+        setListName('');
 
-        localStorage.setItem(
-            uuidv4(),
-            JSON.stringify({
-                'name': this.state.listName,
-                'items': []
-            })
-        );
-
-        this.setState({
-            show: false,
-            listName: ''
-        });
-        this.props.refreshList();
+        close();
 
     }
+
+    return(
+        <motion.div className={styles.Fade}
+            key="fade"
+            variants={fadeTransition}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            transition="transiton">
+            <motion.div 
+                className={styles.CreateListDialog}
+                key="modal"
+                variants={transition}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                transition="transiton">
+                <div>
+                    <button onClick={close} className={styles.CreateListDialog__CloseButton}>
+                        <CloseIcon />
+                    </button>
+
+                    <form onSubmit={createList}>
+                        <div className={styles.CreateListDialog__Content}>
+                            <h2>
+                                New Shopping List
+                            </h2>
+                            <input 
+                                type="text"
+                                value={listName}
+                                onChange={handleChange}
+                                name="listName"
+                                placeholder="List name" />
+                        </div>
+
+                        <button 
+                            type="submit"
+                            className={styles.CreateListDialog__CreateButton}
+                            disabled={listName === ''}>
+                            Create
+                        </button>
+                    </form>
+                </div>
+            </motion.div>
+        </motion.div>
+    )
 
 }
 
-export default CreateListDialog;
+export default connect(
+    mapStateToProps, 
+    mapDispatchToProps
+)(CreateListDialog);

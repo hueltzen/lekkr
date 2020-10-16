@@ -1,11 +1,13 @@
-import React, { Component, createRef } from 'react';
+import React from 'react';
 
 import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
+    BrowserRouter as Router,
+    Switch,
+    Route
 } from 'react-router-dom';
+import { AnimatePresence } from  'framer-motion';
+
+import { connect } from 'react-redux';
 
 import styles from './App.module.scss';
 
@@ -13,55 +15,60 @@ import Home from './routes/Home/Home';
 import SingleList from './routes/SingleList/SingleList';
 import Stores from './routes/Stores/Stores';
 import Settings from './routes/Settings/Settings';
-import FAQ from './routes/FAQ/FAQ';
 
-import { ReactComponent as Logo } from './logo.svg';
-
-import Menu from './components/Menu/Menu';
 import BottomNavbar from './components/BottomNavbar/BottomNavbar';
 
-class App extends Component {
+const mapStateToProps = state => {
+    return { isDarkModeEnabled: state.isDarkModeEnabled }
+};
 
-    constructor(props) {
-        super(props);
+function App(props) {
 
-        this.openMenu = this.openMenu.bind(this);
-
-        this.menu = createRef();
-    }
-
-    render() {
-        return (
-            <div className={styles.App}>
+    return (
+        <div>
+            {props.isDarkModeEnabled &&
+                <style>
+                    {`:root {
+                        --background-color: rgb(0, 0, 0);
+                        --foreground-color: rgb(245, 245, 245);
+                    }
+                    html {
+                        background: rgb(0, 0, 0);
+                    }`}
+                </style>
+            }
+            {!props.isDarkModeEnabled &&
+                <style>
+                    {`:root {
+                        --background-color: rgb(245, 245, 245);
+                        --foreground-color: rgb(0, 0, 0);
+                    }
+                    html {
+                        background: rgb(245, 245, 245);
+                    }`}
+                </style>
+            }
+            <div className={styles.App + ' ' + (props.isDarkModeEnabled ? 'darkmode' : '')}>
                 <Router>
-                    <div className={styles.App__Branding}>
-                        <Link to="/">
-                            <Logo className={styles.App__Branding__Logo} />
-                        </Link>
-                    </div>
 
-                    <Menu 
-                        ref={this.menu}/>
-
-                    <Switch>
-                        <Route path="/faq" component={FAQ} />
-                        <Route path="/settings" component={Settings} />
-                        <Route path="/stores" component={Stores} />
-                        <Route path="/list/:uuid" component={SingleList} />
-                        <Route path="/" component={Home}></Route>
-                    </Switch>
+                    <AnimatePresence exitBeforeEnter>
+                        <Switch>
+                            <Route path="/settings" component={Settings} />
+                            <Route path="/stores" component={Stores} />
+                            <Route path="/list/:uuid" component={SingleList} />
+                            <Route path="/" component={Home}></Route>
+                        </Switch>
+                    </AnimatePresence>
 
                     <BottomNavbar />
 
                 </Router>
             </div>
-        );
-    }
-
-    openMenu() {
-        this.menu.current.open();
-    }
+        </div>
+    );
 
 }
 
-export default App;
+export default connect(
+    mapStateToProps
+)(App);

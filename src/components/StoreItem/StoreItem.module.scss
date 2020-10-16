@@ -2,18 +2,26 @@
 
 .StoreItem {
 
-    color: $foreground-color;
+    background: none;
+    border-radius: 16px;
+    box-sizing: border-box;
+    color: var(--foreground-color);
     display: flex;
-    flex-direction: row;
-    margin: 0 24px 24px;
-    padding: 12px 0;
+    flex-wrap: nowrap;
+    font-weight: 300;
+    margin: 0 24px 12px;
+    padding: 4px 0;
 
     align-items: center;
-    justify-content: flex-start;
 
     &__Name {
 
-        flex: 0 0 calc(100% - 96px);
+        flex: 0 0 calc(100% - 48px);
+        font-family: 'Teko', sans-serif;
+        font-size: 26pt;
+        font-weight: 400;
+        line-height: 26pt;
+        padding: 8px 0 0;
 
     }
 
@@ -25,7 +33,7 @@
         flex-direction: row;
         flex-wrap: wrap;
         padding: 0;
-        margin: 0 24px 0 0;
+        margin: 0 12px 0 0;
 
         align-items: center;
         justify-content: center;
@@ -34,7 +42,7 @@
 
     &__DeleteButton {
 
-        background-color: $background-color;
+        background: none;
         color: $foreground-color;
         border: 0;
         border-radius: 50%;
@@ -56,6 +64,7 @@
 
         svg {
 
+            color: var(--foreground-color);
             transition: opacity .3s ease-in-out;
 
         }

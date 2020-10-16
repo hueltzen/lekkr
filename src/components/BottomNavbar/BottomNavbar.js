@@ -1,38 +1,33 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styles from './BottomNavbar.module.scss';
 
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-import { ReactComponent as HomeIcon } from './home.svg';
+import { ReactComponent as ListsIcon } from './lists.svg';
 import { ReactComponent as StoresIcon } from './stores.svg';
-import { ReactComponent as GithubIcon } from './github.svg';
+import { ReactComponent as SettingsIcon } from './settings.svg';
+import { ReactComponent as SearchIcon } from './search.svg';
 
-class BottomNavbar extends Component {
+function BottomNavbar(props) {
 
-    render() {
-        return(
-            <div className={styles.BottomNavbar}>
-                <div className={styles.container}>
-                    <div className={ styles.BottomNavbar__Left }>
-                        <Link to="/">
-                            <HomeIcon />
-                            <span className={styles.desktopOnly}>Home</span>
-                        </Link>
-                        <Link to="/stores">
-                            <StoresIcon />
-                            <span className={styles.desktopOnly}>Stores</span>
-                        </Link>
-                        </div>
-                    <div className={ styles.BottomNavbar__Right }>
-                        <a href="https://github.com/hueltzen/lekkr" target="_blank" rel="noopener noreferrer">
-                            <GithubIcon />
-                            <span className={styles.desktopOnly}>Github</span>
-                        </a>
-                    </div>
-                </div>
+    return(
+        <div className={styles.BottomNavbar}>
+            <div className={styles.container}>
+                <NavLink exact to="/">
+                    <ListsIcon />
+                    <span className={styles.desktopOnly}>Home</span>
+                </NavLink>
+                <NavLink exact to="/stores">
+                    <StoresIcon />
+                    <span className={styles.desktopOnly}>Stores</span>
+                </NavLink>
+                <NavLink exact to="/settings">
+                    <SettingsIcon />
+                    <span className={styles.desktopOnly}>Settings</span>
+                </NavLink>
             </div>
-        )
-    }
+        </div>
+    );
 
 }
 

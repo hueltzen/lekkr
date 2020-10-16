@@ -2,26 +2,27 @@
 
 .CreateListDialog {
 
-    background-color: lighten($background-color, 10%);
-    border-radius: 16px 16px 0 0;
+    background: $foreground-color;
+    border-radius: 16px 16px;
     box-sizing: border-box;
-    color: $foreground-color;
-    padding: 24px 24px 24px;
-    position: fixed;
-    transform: translateY(300px);
+    color: var(--foreground-color);
+    display: block;
     transition: transform .4s ease-in-out;
 
-    height: 300px;
+    width: 100%;
 
-    bottom: 0;
-    left: 0;
-    right: 0;
+    &__Content {
 
-    z-index: 3;
+        padding: 24px 24px 0;
+
+    }
 
     h2 {
 
-        margin: 0 0 48px 0;
+        color: $background-color;
+        font-weight: 300;
+        margin: 0 0 36px 0;
+        text-align: center;
 
     }
 
@@ -33,22 +34,33 @@
     }
 
     input {
-
-        background-color: #fff;
+    
+        background-color: rgba(0, 0, 0, 0);
         background-repeat: no-repeat;
         background-position: calc(100% - 16px) center;
-        border: 2px solid #fff;
-        border-radius: 16px;
+        border: 0;
+        border-bottom: 1px solid $background-color;
+        border-radius: 0;
         box-sizing: border-box;
+        color: $background-color;
         font-size: 16px;
-        margin: 0 0 24px;
+        margin: 0 0 36px;
         outline: none;
         padding: 10px 12px;
-        transition: border .4s ease-in-out;
+        transition: color .4s ease-in-out,
+                    border .4s ease-in-out;
+
+        width: 100%;
+
+        &::placeholder {
+            
+            color: darken($foreground-color, 60%);
+            
+        }
 
         &:focus {
 
-            border: 2px solid $primary-color;
+            border-bottom: 1px solid $primary-color;
 
         }
 
@@ -58,18 +70,20 @@
 
         background: $primary-color;
         border: 0;
-        border-radius: 16px;
+        border-radius: 0 0 16px 16px;
         box-sizing: border-box;
-        color: $background-color;
+        color: $foreground-color;
         font-size: 12pt;
         outline: none;
         padding: 16px;
-        transition: background .4s ease-in-out;
+        margin: 0;
+        transition: color .4s ease-in-out,
+                    background .4s ease-in-out;
 
         &:disabled {
 
-            background: lighten($background-color, 10%);
-            color: lighten($background-color, 40%);
+            background: none;
+            color: darken($foreground-color, 60%);
 
         }
 
@@ -83,27 +97,47 @@
 
     &__CloseButton {
 
-        background: rgba(0, 0, 0, 0);
+        background: $foreground-color;
         border: 0;
         border-radius: 50%;
-        color: $foreground-color;
+        color: $background-color;
+        display: flex;
         outline: none;
         position: absolute;
+        transform: translate(-50%, 0);
         transition: background .4s ease-in-out;
 
-        top: 12px;
-        right: 12px;
+        align-items: center;
+        justify-content: center;
 
-        width: 44px;
-        height: 44px;
+        bottom: 96px;
+        left: 50%;
 
-        &:active {
-
-            background: lighten($background-color, 40%);
-
-        }
+        width: 48px;
+        height: 48px;
 
     }
+
+}
+
+.Fade {
+
+    background: rgba(0, 0, 0, .6);
+    display: flex;
+    box-sizing: border-box;
+    padding: 24px;
+    
+    position: fixed;
+
+    align-items: center;
+    justify-content: center;
+
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    z-index: 1000;
 
 }
 
@@ -112,16 +146,7 @@
     .CreateListDialog {
 
         margin: 0 auto;
-        transform: translateY(260px);
-
-        height: 260px;
         max-width: 400px;
-
-        &__open {
-
-            transform: translateY(0);
-    
-        }
 
     }
 

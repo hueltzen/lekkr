@@ -1,4 +1,5 @@
-$primary-color: rgb(0, 230, 118);
+$primary-color: #FC5C7D;
+$secondary-color: #6A82FB;
 
 $background-color: rgb(0, 0, 0);
 $foreground-color: rgb(245, 245, 245);
@@ -6,6 +7,8 @@ $foreground-color: rgb(245, 245, 245);
 $outer-shadow: 8px 8px 30% rgb(16,19,22),
                 -8px -8px 30% rgb(57,62,68),
                 -1px -1px 60% rgba(33,39,44, .01);
+
+$shadow: 2px 2px 40px -12px #999;
 
 $store-white: #ffffff;
 $store-red: #ef5350;

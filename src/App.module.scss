@@ -2,14 +2,18 @@
 
 .App {
 
-    padding: 96px 0;
+    background: var(--background-color);
+    padding: 64px 0;
+    transition: background .4s ease-in-out,
+                color .4s ease-in-out;
+
+    min-height: calc(100vh - 128px);
 
     &__Branding {
 
-        background: $background-color;
         display: flex;
         padding: 66px 24px 16px;
-        position: fixed;
+        position: absolute;
         transform: translateY(-48px);
 
         justify-content: center;
@@ -67,5 +71,15 @@
 
     }
 
+}
+
+
+@media screen and (min-width: 768px) {
+
+    .App {
+
+        padding-top: 140px;
+
+    }
 
 }

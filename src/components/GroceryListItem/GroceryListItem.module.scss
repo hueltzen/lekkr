@@ -2,15 +2,16 @@
 
 .GroceryListItem {
 
+    border-radius: 16px;
     box-sizing: border-box;
     display: flex;
     cursor: pointer;
     flex-direction: row;
     flex-wrap: nowrap;
     font-weight: 300;
-    margin: 0 24px 4px;
+    margin: 0 24px 18px;
     overflow: hidden;
-    padding: 18px 0 ;
+    padding: 0;
     position: relative;
     transition: all .4s ease-in-out;
 
@@ -18,11 +19,15 @@
 
     &__Content {
 
+        background: none;
         box-sizing: border-box;
+        border: 0;
         display: flex;
-        color: $foreground-color;
-        flex: 1 1 calc(50% - 48px);
-        padding: 0 0 0 24px;
+        color: $primary-color;
+        cursor: pointer;
+        flex: 0 0 100%;
+        padding: 8px 0;
+        outline: none;
 
         align-items: center;
 
@@ -32,21 +37,21 @@
 
         &__Name {
     
-            color: $primary-color;
             display: flex;
-            font-family: 'Open Sans', sans-serif;
-            font-size: 12pt;
-            font-weight: 600;
-            line-height: 12pt;
+            font-size: 26pt;
+            font-family: 'Teko', sans-serif;
+            font-weight: 400;
+            letter-spacing: 2px;
+            line-height: 26pt;
             margin: 0;
-            padding: 0 4px;
+            padding: 0 8px 0 4px;
             position: relative;
 
             align-items: center;
 
             &::before {
 
-                background-color: darken($primary-color, 24%);
+                background-color: $primary-color;
                 content: '';
                 position: absolute;
                 transform: translateY(-50%)
@@ -54,7 +59,7 @@
                 transform-origin: left;
                 transition: transform .4s ease-in-out;
 
-                height: 1px;
+                height: 3px;
 
                 top: 50%;
                 left: 0;
@@ -76,59 +81,10 @@
 
     }
 
-    &__Button {
-
-        background-color: $background-color;
-        color: darken($primary-color, 24%);
-        border: 1px solid $primary-color;
-        border-radius: 50%;
-        box-sizing: border-box;
-        cursor: pointer;
-        display: flex;
-        flex: 0 0 14px;
-        outline: none;
-        padding: 0;
-        transition: background .4s ease-in-out,
-                    border .3s ease-in-out;
-
-        align-items: center;
-        justify-content: center;
-
-        width: 24px;
-        height: 24px;
-
-        svg {
-
-            color: $background-color;
-            opacity: 0;
-            transition: opacity .3s ease-in-out;
-
-        }
-        
-        &:active {
-
-            background: #e4e4e4;
-
-        }
-
-        &.checked {
-
-            background: $primary-color;
-
-            svg {
-
-                opacity: 1;
-                
-            }
-
-        }
-
-    }
-
     &__DeleteButton {
 
-        background-color: $background-color;
-        color: darken($primary-color, 24%);
+        background: none;
+        color: darken($foreground-color, 20%);
         border: 0;
         border-radius: 50%;
         box-sizing: border-box;
@@ -138,11 +94,14 @@
         margin: 0 0 0 24px;
         outline: none;
         padding: 0;
+        position: absolute;
         transition: background .4s ease-in-out,
                     border .3s ease-in-out;
 
         align-items: center;
         justify-content: center;
+
+        right: 0;
 
         width: 24px;
         height: 24px;
@@ -173,18 +132,10 @@
     }
 
     &.checked {
-        
-        .GroceryListItem__button {
-            
-            box-shadow: none;
-            
-        }
 
         .GroceryListItem {
         
             &__Content__Name {
-                
-                color: darken($primary-color, 24%);
 
                 &::before {
 
@@ -200,6 +151,7 @@
 
     &__ConfigDialog {
 
+        display: none !important;
         background: lighten($background-color, 10%);
         color: darken($primary-color, 24%);
         border-radius: 16px 16px 0 0;

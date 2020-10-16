@@ -1,5 +1,14 @@
-import React, { Component, createRef } from 'react';
+import React from 'react';
 import styles from './Home.module.scss';
+
+import { connect } from 'react-redux';
+import { setCreateDialog } from '../../actions/ListActions';
+
+import {
+    motion,
+    AnimatePresence
+} from  'framer-motion';
+import PageTransition from '../PageTransitions';
 
 import PageHeadline from '../../components/PageHeadline/PageHeadline';
 import ShoppingListItem from '../../components/ShoppingListItem/ShoppingListItem';
@@ -7,97 +16,76 @@ import CreateListDialog from '../../components/CreateListDialog/CreateListDialog
 
 import { ReactComponent as AddIcon } from './add.svg';
 
-class Home extends Component {
+const mapStateToProps = state => {
+    return { 
+        lists: state.lists,
+        isCreateDialogOpen: state.isCreateDialogOpen
+    };
+};
 
-    constructor(props) {
-        super(props);
-        
-        this.openAddDialog = this.openAddDialog.bind(this);
-        this.refreshList = this.refreshList.bind(this);
+function mapDispatchToProps(dispatch) {
+    return {
+        setCreateDialog: open => dispatch(setCreateDialog(open))
+    };
+}
 
-        this.addDialog = createRef();
+function Home(props) {
 
-        this.state = ({
-            shoppingListItems: []
+    function openCreateDialog() {
+
+        props.setCreateDialog({
+            open: true
         });
 
     }
 
-    componentDidMount() {
+    const shoppingListItems = props.lists.map((shoppingList, i) => 
+        <ShoppingListItem 
+            key={shoppingList.uuid}
+            uuid={shoppingList.uuid}
+            name={shoppingList.name}
+            items={shoppingList.items}/>
+    );
 
-        this.refreshList();
+    return (
+        <div>
+            <motion.div
+                className={styles.Home}
+                variants={PageTransition}
+                initial="out"
+                animate="in"
+                exit="out"
+                transition="transition">
 
-    }
-
-    render() {
-
-        const shoppingListItems = this.state.shoppingListItems.map((shoppingList, i) => 
-                <ShoppingListItem 
-                    key={shoppingList.id}
-                    uuid={shoppingList.id}
-                    name={shoppingList.name}
-                    items={shoppingList.items}
-                    refreshList={this.refreshList}/>
-            );
-
-        return (
-            <div className={styles.Home}>
                 <PageHeadline>
-                    Your Lists
-                </PageHeadline>
+                    Your<br /> Shopping Lists
 
-                <button className={styles.Home__Button} onClick={this.openAddDialog}>
-                    <AddIcon />
-                </button>
-
-                <CreateListDialog 
-                    ref={this.addDialog}
-                    refreshList={this.refreshList} />
-
+                    </PageHeadline>
+                    
                 <div>
                     { shoppingListItems.length > 0 
                         ? shoppingListItems
-                        : <p className={styles.Home__EmptyMessage}>No Lists yet</p>
+                        : <p className={styles.Home__EmptyMessage}>Let's get to work! <span role="img" aria-label="work">💪</span></p>
                     }
                 </div>
-            </div>
-        );
-    }
+            
+                <button className={styles.Home__Button} onClick={openCreateDialog}>
+                    <AddIcon /> New
+                </button>
 
-    openAddDialog() {
-        this.addDialog.current.open();
-    }
+            </motion.div>
 
-    refreshList() {
+            <AnimatePresence>
+                { props.isCreateDialogOpen &&
+                    <CreateListDialog />}
+            </AnimatePresence>
 
-        this.setState({ shoppingListItems: [] });
-        Object.keys(localStorage).forEach(key => {
-
-            if (key === 'stores') {
-                return;
-            }
-
-            const shoppingList = JSON.parse(localStorage.getItem(key));
-
-            this.setState(state => {
-                
-                const shoppingListItems = state.shoppingListItems.concat(
-                    {
-                        'id': key,
-                        'name': shoppingList.name,
-                        'items': shoppingList.items
-                    }
-                );
-
-                return {
-                    shoppingListItems
-                }
-            });
-
-        });
-
-    }
+        </div>
+    );
 
 }
 
-export default Home;
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Home);

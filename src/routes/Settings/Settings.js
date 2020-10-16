@@ -1,46 +1,93 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styles from './Settings.module.scss';
+
+import { connect } from 'react-redux';
+import { setDarkMode } from '../../actions/ListActions';
+
+import { motion } from  'framer-motion';
+import PageTransition from '../PageTransitions';
 
 import PageHeadline from '../../components/PageHeadline/PageHeadline';
 
-class Settings extends Component {
+import { ReactComponent as LinkIcon } from './link.svg';
 
-    render() {
-        return (
-            <div className={styles.Settings}>
+const mapStateToProps = state => {
+    return { isDarkModeEnabled: state.isDarkModeEnabled }
+}
 
-                <PageHeadline>
-                    Your Settings
-                </PageHeadline>
-
-                <ol className={styles.Settings__List}>
-                    <li className={styles.Settings__List__Item}>
-                        <h2 className={styles.Settings__List__Item__Title}>You</h2>
-
-                        <div className={styles.Settings__List__Item__Options}>
-                            <div className={styles.Settings__List__Item__Options__Name}>
-                                <input type="text" placeholder="Your Name"></input>
-                            </div>
-                        </div>
-                    </li>
-                    <li className={styles.Settings__List__Item}>
-                        <h2 className={styles.Settings__List__Item__Title}>Dark Mode</h2>
-
-                        <div className={styles.Settings__List__Item__Options}>
-                            <div className={styles.Settings__List__Item__Options__Name}>
-                                Turn on Dark Mode (Coming soon)
-                            </div>
-                            <div className={styles.Settings__List__Item__Options__Name}>
-                                <input type="checkbox"></input>
-                            </div>
-                        </div>
-                    </li>
-                </ol>
-                
-            </div>
-        )
+const mapDispatchToProps = dispatch => {
+    return {
+        setDarkMode: enabled => dispatch(setDarkMode(enabled))
     }
+};
+
+function Settings(props) {
+
+    function toggleDarkMode(e) {
+
+        console.log('toggle dark mode');
+        props.setDarkMode({
+            enabled: !props.isDarkModeEnabled
+        });
+
+    }
+
+    return (
+        <motion.div
+            className={styles.Settings}
+            variants={PageTransition}
+            initial="out"
+            animate="in"
+            exit="out"
+            transition="transition">
+
+            <PageHeadline>
+                Settings
+            </PageHeadline>
+
+            <ol className={styles.Settings__List}>
+                <li className={styles.Settings__List__Item}>
+                    <h2 className={styles.Settings__List__Item__Title}>General</h2>
+
+                    <label 
+                        className={styles.Settings__List__Item__Options}
+                        htmlFor="darkMode">
+                        <div className={styles.Settings__List__Item__Options__Name}>
+                            Dark Mode
+                        </div>
+                        <div 
+                            className={
+                                styles.Settings__List__Item__Options__Switch + ' ' 
+                                + (props.isDarkModeEnabled ? styles.on : styles.off)}>
+                        </div>
+                    </label>
+                </li>
+                <li className={styles.Settings__List__Item}>
+                    <h2 className={styles.Settings__List__Item__Title}>Software</h2>
+                    
+                    <a href="https://github.com/hueltzen/lekkr">
+                        <LinkIcon />
+                        Code on Github
+                    </a>
+                </li>
+            </ol>
+
+            <div>
+                <input 
+                    className={styles.hidden}
+                    type="checkbox"
+                    onChange={toggleDarkMode}
+                    checked={props.isDarkModeEnabled} 
+                    name="darkMode"
+                    id="darkMode" />
+            </div>
+            
+        </motion.div>
+    )
 
 }
 
-export default Settings;
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Settings);

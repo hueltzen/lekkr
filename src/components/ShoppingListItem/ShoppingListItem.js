@@ -1,90 +1,77 @@
-import React, { Component } from 'react';
-
-import {
-    Link
-} from 'react-router-dom';
-
+import React from 'react';
 import styles from './ShoppingListItem.module.scss';
 
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+
+import { connect } from 'react-redux';
+import { deleteList } from '../../actions/ListActions';
+
 import { ReactComponent as DeleteIcon } from './delete.svg';
+import { ReactComponent as CheckIcon } from './check.svg';
 
-class ShoppingListItem extends Component {
+function mapDispatchToProps(dispatch) {
+    return {
+        deleteList: listUuid => dispatch(deleteList(listUuid))
+    };
+}
+function ShoppingListItem(props) {
 
-    constructor(props) {
-        super(props)
+    const transition = {
+        visible: {
+            opacity: [0, 0, 0, 1],
+            y: [48, 32, 16, 0]
+        },
+        hidden: {
+            opacity: [0, 0, 0, 0],
+            y: [0, 16, 32, 48]
+        },
+        transition: {
+            duration: 0.4
+        }
+    }
 
-        this.openDeleteDialog = this.openDeleteDialog.bind(this);
-        this.closeDeleteDialog = this.closeDeleteDialog.bind(this);
-        this.deleteItem = this.deleteItem.bind(this);
+    function deleteItem() {
 
-        this.state = ({
-            deleteDialogOpen: false
+        props.deleteList({
+            uuid: props.uuid
         });
 
     }
 
-    render() {
-        return(
-            <div className={styles.ShoppingListItem}>
-                <div className={styles.ShoppingListItem__content}>
-                    <Link to={`/list/${this.props.uuid}`}>
-                        <h2 className={styles.ShoppingListItem__content__name}>{ this.props.name }</h2>
-                        <div className={styles.ShoppingListItem__content__numberOfItems}>
-                            { this.props.items.length } Products
-                        </div>
-                    </Link>
-                </div>
-                <button 
-                    className={styles.ShoppingListItem__Button}
-                    onClick={this.openDeleteDialog}>
-                    <DeleteIcon />
-                </button>
+    const itemsChecked = props.items.filter(item => {
+        return item.checked
+    });
 
-                <div className={styles.ShoppingListItem__DeleteDialog + ' ' + (this.state.deleteDialogOpen ? styles.open : '')}>
-                    <p className={styles.ShoppingListItem__DeleteDialog__Text}>
-                        Are you sure you want to delete "{ this.props.name }"?
-                    </p>
-                    <div className={styles.ShoppingListItem__DeleteDialog__Actions}>
-                        <button
-                            className={styles.ShoppingListItem__DeleteDialog__Actions__Cancel}
-                            onClick={this.closeDeleteDialog}>
-                            Cancel
-                        </button>
-                        <button
-                            className={styles.ShoppingListItem__DeleteDialog__Actions__Confirm}
-                            onClick={this.deleteItem}>
-                            Delete
-                        </button>
+    return(
+        <motion.div 
+            className={styles.ShoppingListItem}
+            variants={transition}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            transition={transition.transition}>
+            <div className={styles.ShoppingListItem__content}>
+                <Link to={`/list/${props.uuid}`}>
+                    <h2 className={styles.ShoppingListItem__content__name}>{ props.name }</h2>
+                    <div className={styles.ShoppingListItem__content__numberOfItems}>
+                        <CheckIcon /> {itemsChecked.length} / { props.items.length }
                     </div>
-                </div>
+                </Link>
             </div>
-        )
-    }
 
-    openDeleteDialog() {
+            <button 
+                className={styles.ShoppingListItem__Button}
+                onClick={deleteItem}>
+                <DeleteIcon />
+            </button>
 
-        this.setState({
-            deleteDialogOpen: true
-        });
-
-    }
-
-    closeDeleteDialog() {
-
-        this.setState({
-            deleteDialogOpen: false
-        });
-
-    }
-
-    deleteItem() {
-
-        localStorage.removeItem(this.props.uuid);
-
-        this.props.refreshList();
-
-    }
+        </motion.div>
+    )
 
 }
 
-export default ShoppingListItem;
+export default connect(
+    null,
+    mapDispatchToProps
+)(ShoppingListItem);
